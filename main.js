@@ -283,4 +283,49 @@ if (auditForm) {
       locations: auditForm.querySelector('input[name="entry.placeholder3"]:checked')?.value,
       techStack: document.getElementById('tech-stack').value,
       painPoint: document.getElementById('pain-point').value,
-      leadSpeed: audi
+      leadSpeed: auditForm.querySelector('input[name="entry.placeholder6"]:checked')?.value,
+      email: document.getElementById('contact-email').value,
+      submittedAt: new Date().toISOString()
+    };
+
+    const N8N_WEBHOOK_URL = 'https://n8n.srv1171616.hstgr.cloud/webhook-test/d4bf3ee6-fe56-4937-b8a8-e835ec887c47';
+
+    try {
+      const response = await fetch(N8N_WEBHOOK_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (response.ok) {
+        btnSubmit.innerText = 'Gesendet!';
+        btnSubmit.style.backgroundColor = '#10b981';
+
+        setTimeout(() => {
+          contactOverlay.classList.remove('active');
+          document.body.style.overflow = '';
+          currentStep = 1;
+          updateStepVisibility();
+          auditForm.reset();
+          btnSubmit.disabled = false;
+          btnSubmit.innerText = originalBtnText;
+          btnSubmit.style.backgroundColor = '';
+        }, 2000);
+      } else {
+        throw new Error('Server respondierte mit Fehler');
+      }
+    } catch (error) {
+      console.error('Submission failed:', error);
+      btnSubmit.innerText = 'Fehler! Neuladen...';
+      btnSubmit.style.backgroundColor = '#ef4444';
+
+      setTimeout(() => {
+        btnSubmit.disabled = false;
+        btnSubmit.innerText = originalBtnText;
+        btnSubmit.style.backgroundColor = '';
+      }, 3000);
+    }
+  });
+}
