@@ -203,17 +203,56 @@ if (btnNext) {
     const currentStepEl = document.querySelector(`.form-step[data-step="${currentStep}"]`);
     const inputs = currentStepEl.querySelectorAll('input, textarea, select');
     let isValid = true;
+    let firstInvalidInput = null;
+
+    // Reset previous error states
+    currentStepEl.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
+    currentStepEl.querySelectorAll('.error-message').forEach(el => el.remove());
 
     inputs.forEach(input => {
       if (!input.checkValidity()) {
-        input.reportValidity();
         isValid = false;
+
+        // Add visual error class
+        input.classList.add('input-error');
+
+        // Handle Radio Buttons (highlight container)
+        if (input.type === 'radio') {
+          const radioOption = input.closest('.radio-option') || input.parentElement;
+          if (radioOption) radioOption.classList.add('input-error');
+        }
+
+        if (!firstInvalidInput) {
+          firstInvalidInput = input;
+        }
+      } else {
+        input.classList.remove('input-error');
+        if (input.type === 'radio') {
+          const radioOption = input.closest('.radio-option') || input.parentElement;
+          if (radioOption) radioOption.classList.remove('input-error');
+        }
       }
     });
 
-    if (isValid && currentStep < totalSteps) {
-      currentStep++;
-      updateStepVisibility();
+    if (isValid) {
+      if (currentStep < totalSteps) {
+        currentStep++;
+        updateStepVisibility();
+      }
+    } else {
+      // Focus/Scroll to first invalid input
+      if (firstInvalidInput) {
+        firstInvalidInput.reportValidity();
+        // Fallback shake animation or focus if reportValidity doesn't show
+        firstInvalidInput.focus();
+
+        // Add shake effect to form
+        const currentGroup = firstInvalidInput.closest('.form-group');
+        if (currentGroup) {
+          currentGroup.classList.add('shake');
+          setTimeout(() => currentGroup.classList.remove('shake'), 500);
+        }
+      }
     }
   });
 }
@@ -244,49 +283,4 @@ if (auditForm) {
       locations: auditForm.querySelector('input[name="entry.placeholder3"]:checked')?.value,
       techStack: document.getElementById('tech-stack').value,
       painPoint: document.getElementById('pain-point').value,
-      leadSpeed: auditForm.querySelector('input[name="entry.placeholder6"]:checked')?.value,
-      email: document.getElementById('contact-email').value,
-      submittedAt: new Date().toISOString()
-    };
-
-    const N8N_WEBHOOK_URL = 'https://n8n.srv1171616.hstgr.cloud/webhook-test/d4bf3ee6-fe56-4937-b8a8-e835ec887c47';
-
-    try {
-      const response = await fetch(N8N_WEBHOOK_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
-      });
-
-      if (response.ok) {
-        btnSubmit.innerText = 'Gesendet!';
-        btnSubmit.style.backgroundColor = '#10b981';
-
-        setTimeout(() => {
-          contactOverlay.classList.remove('active');
-          document.body.style.overflow = '';
-          currentStep = 1;
-          updateStepVisibility();
-          auditForm.reset();
-          btnSubmit.disabled = false;
-          btnSubmit.innerText = originalBtnText;
-          btnSubmit.style.backgroundColor = '';
-        }, 2000);
-      } else {
-        throw new Error('Server respondierte mit Fehler');
-      }
-    } catch (error) {
-      console.error('Submission failed:', error);
-      btnSubmit.innerText = 'Fehler! Neuladen...';
-      btnSubmit.style.backgroundColor = '#ef4444';
-
-      setTimeout(() => {
-        btnSubmit.disabled = false;
-        btnSubmit.innerText = originalBtnText;
-        btnSubmit.style.backgroundColor = '';
-      }, 3000);
-    }
-  });
-}
+      leadSpeed: audi
