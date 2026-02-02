@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+        content="sphere. - Buche dein kostenloses Erstgespräch. KI-Implementierung & Automationen für Fitnessstudios." />
+    <title>Termin buchen | sphere.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container navbar-content">
+            <a href="index.html" class="logo-link">
+                <span class="logo-text-brand">sphere<span class="accent-dot">.</span></span>
+            </a>
+
+            <a href="index.html#contact" class="btn-pill">
+                <span class="btn-text">Contact Us</span>
+                <span class="icon-circle">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Booking Section -->
+    <main class="section booking-page">
+        <div class="container">
+            <div class="booking-header">
+                <h1 class="section-title">Wähle einen Termin<span class="accent-dot">.</span></h1>
+                <p class="subtitle">Lass uns gemeinsam schauen, wie wir dein Fitnessstudio skalieren können.</p>
+            </div>
+
+            <div class="calendar-container" style="transition-delay: 200ms; min-height: 800px; padding: 0;">
+                <!-- Cal.com Iframe fallback for better reliability -->
+                <iframe src="https://cal.com/tobias-fragner-osqrrc?embed=true&theme=dark&brandColor=%237c3aed"
+                    style="width: 100%; height: 800px; border: none; border-radius: var(--radius); background: transparent;"
+                    allowfullscreen loading="eager" title="Termin buchen">
+                </iframe>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <strong>sphere<span class="accent-dot">.</span></strong>
+                    <p>Intelligente Prozess-Architektur.</p>
+                </div>
+                <div class="footer-links">
+                    <a href="impressum.html">Impressum</a>
+                    <a href="datenschutz.html">Datenschutz</a>
+                    <a href="mailto:kontakt@sphere.de">Kontakt</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2024 sphere<span class="accent-dot">.</span> Alle Rechte vorbehalten.
+            </div>
+        </div>
+    </footer>
+
+    <script type="module" src="/particles.js"></script>
+    <script type="module" src="/main.js"></script>
+</body>
+
+</html>
